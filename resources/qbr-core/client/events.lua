@@ -6,7 +6,7 @@ RegisterNetEvent('QBCore:Client:OnPlayerLoaded', function()
         SetRelationshipBetweenGroups(5, `PLAYER`, `PLAYER`)
     end
     if QBConfig.Player.RevealMap then
-		SetMinimapHideFow(true)
+	SetMinimapHideFow(true)
 	end
 end)
 
@@ -94,10 +94,8 @@ RegisterNetEvent('QBCore:Command:GoToMarker', function()
     Notify(9, 'Teleported', 5000, 0, 'hud_textures', 'check', 'COLOR_WHITE')
 end)
 
--- Vehicle | Horse Events
-
 RegisterNetEvent('QBCore:Command:SpawnVehicle', function(model)
-    local vehicle = exports['qbr-core']:SpawnVehicle(model)
+    	local vehicle = exports['qbr-core']:SpawnVehicle(model)
 	TaskWarpPedIntoVehicle(PlayerPedId(), vehicle, -1)
 end)
 
@@ -105,16 +103,16 @@ RegisterNetEvent('QBCore:Command:DeleteVehicle', function()
 	local ped = PlayerPedId()
 	local vehicle = exports['qbr-core']:GetClosestVehicle()
 	if IsPedInAnyVehicle(ped) then vehicle = GetVehiclePedIsIn(ped, false) end
-    SetEntityAsMissionEntity(vehicle, true, true)
-    DeleteVehicle(vehicle)
+	SetEntityAsMissionEntity(vehicle, true, true)
+	DeleteVehicle(vehicle)
 end)
 
 RegisterNetEvent('QBCore:Command:GetCoords', function()
-    local ped = PlayerPedId()
-    local pos = GetEntityCoords(ped, false)
-    local heading = GetEntityHeading(ped)
-    AddTextEntry("FMMC_KEY_TIP12", "Coords")
-    DisplayOnscreenKeyboard(1, "FMMC_KEY_TIP12", "", vector4(pos.x, pos.y, pos.z, heading), "", "", "", 150)
+    	local ped = PlayerPedId()
+    	local pos = GetEntityCoords(ped, false)
+    	local heading = GetEntityHeading(ped)
+    	AddTextEntry("FMMC_KEY_TIP12", "Coords")
+    	DisplayOnscreenKeyboard(1, "FMMC_KEY_TIP12", "", vector4(pos.x, pos.y, pos.z, heading), "", "", "", 150)
 end)
 
 RegisterNetEvent('QBCore:Command:SpawnHorse', function(HorseName)
