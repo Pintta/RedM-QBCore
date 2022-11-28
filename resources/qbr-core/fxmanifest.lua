@@ -4,7 +4,7 @@ lua54 'yes'
 
 shared_scripts {
 	'shared/locale.lua',
-	'locale/en.lua', -- replace with desired language
+	'locale/en.lua',
 	'config.lua',
 	'shared/main.lua',
 	'shared/items.lua',
