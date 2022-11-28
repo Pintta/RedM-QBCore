@@ -1,6 +1,3 @@
--- Player load and unload handling
--- New method for checking if logged in across all scripts (optional)
--- if LocalPlayer.state['isLoggedIn'] then
 RegisterNetEvent('QBCore:Client:OnPlayerLoaded', function()
     ShutdownLoadingScreenNui()
     LocalPlayer.state:set('isLoggedIn', true, false)
@@ -21,7 +18,6 @@ RegisterNetEvent('QBCore:Client:PvpHasToggled', function(pvp_state)
     NetworkSetFriendlyFireOption(pvp_state)
 end)
 
--- QBCore Teleport Events
 RegisterNetEvent('QBCore:Command:TeleportToPlayer', function(coords)
     local ped = PlayerPedId()
     SetEntityCoords(ped, coords.x, coords.y, coords.z)
@@ -36,24 +32,17 @@ RegisterNetEvent('QBCore:Command:GoToMarker', function()
     local PlayerPedId = PlayerPedId
     local GetEntityCoords = GetEntityCoords
     local GetGroundZAndNormalFor_3dCoord = GetGroundZAndNormalFor_3dCoord
-
     if not IsWaypointActive() then
         Notify(9, 'No Waypoint Set', 5000, 0, 'mp_lobby_textures', 'cross', 'COLOR_WHITE')
         return 'marker'
     end
-
-    --Fade screen to hide how clients get teleported.
     DoScreenFadeOut(650)
     while not IsScreenFadedOut() do
         Wait(0)
     end
-
     local ped, coords <const> = PlayerPedId(), GetWaypointCoords()
     local vehicle = GetVehiclePedIsIn(ped, false)
     local oldCoords <const> = GetEntityCoords(ped)
-
-    -- Unpack coords instead of having to unpack them while iterating.
-    -- 825.0 seems to be the max a player can reach while 0.0 being the lowest.
     local x, y, groundZ, Z_START = coords['x'], coords['y'], 850.0, 950.0
     local found = false
     if vehicle > 0 then
@@ -61,7 +50,6 @@ RegisterNetEvent('QBCore:Command:GoToMarker', function()
     else
         FreezeEntityPosition(ped, true)
     end
-
     for i = Z_START, 0, -25.0 do
         local z = i
         if (i % 2) ~= 0 then
@@ -84,8 +72,6 @@ RegisterNetEvent('QBCore:Command:GoToMarker', function()
             end
             Wait(0)
         end
-        -- Get ground coord. As mentioned in the natives, this only works if the client is in render distance.
-        --found, groundZ = GetGroundZFor_3dCoord(x, y, z, false)
         found, groundZ = GetGroundZAndNormalFor_3dCoord(x, y, z)
         if found then
             Wait(0)
@@ -94,23 +80,16 @@ RegisterNetEvent('QBCore:Command:GoToMarker', function()
         end
         Wait(0)
     end
-
-    -- Remove black screen once the loop has ended.
     DoScreenFadeIn(650)
     if vehicle > 0 then
         FreezeEntityPosition(vehicle, false)
     else
         FreezeEntityPosition(ped, false)
     end
-
     if not found then
-        -- If we can't find the coords, set the coords to the old ones.
-        -- We don't unpack them before since they aren't in a loop and only called once.
         SetEntityCoords(ped, oldCoords['x'], oldCoords['y'], oldCoords['z'] - 1.0)
         Notify(9, 'Error teleporting', 5000, 0, 'mp_lobby_textures', 'cross', 'COLOR_WHITE')
     end
-
-    -- If Z coord was found, set coords in found coords.
     SetEntityCoords(ped, x, y, groundZ)
     Notify(9, 'Teleported', 5000, 0, 'hud_textures', 'check', 'COLOR_WHITE')
 end)
@@ -145,20 +124,18 @@ RegisterNetEvent('QBCore:Command:SpawnHorse', function(HorseName)
         local animalHash = GetHashKey(hash)
         if not IsModelValid(animalHash) then return end
         while not HasModelLoaded(animalHash) do Wait(100) end
-		local x, y, z = table.unpack(GetOffsetFromEntityInWorldCoords(ped, 0.0, 4.0, 0.5))
+	local x, y, z = table.unpack(GetOffsetFromEntityInWorldCoords(ped, 0.0, 4.0, 0.5))
         local npc = CreatePed(animalHash, x, y, z, GetEntityHeading(ped) + 90, 1, 0)
         SetRandomOutfitVariation(npc, true)
         SetPedScale(npc, num)
-		while not IsPedReadyToRender(npc) do Wait(0) end
-		Citizen.InvokeNative(0x704C908E9C405136, npc)
-		Citizen.InvokeNative(0xAAB86462966168CE, npc, 1)
+	while not IsPedReadyToRender(npc) do Wait(0) end
+	Citizen.InvokeNative(0x704C908E9C405136, npc)
+	Citizen.InvokeNative(0xAAB86462966168CE, npc, 1)
         Wait(500)
     else
-		Notify(9, 'Model not found', 5000, 0, 'mp_lobby_textures', 'cross', 'COLOR_WHITE')
+	Notify(9, 'Model not found', 5000, 0, 'mp_lobby_textures', 'cross', 'COLOR_WHITE')
     end
 end)
-
--- Other stuff
 
 RegisterNetEvent('QBCore:Player:SetPlayerData', function(val)
     QBCore.PlayerData = val
@@ -183,7 +160,6 @@ RegisterNetEvent('QBCore:Client:TriggerCallback', function(name, ...)
     end
 end)
 
--- Listen to Shared being updated
 RegisterNetEvent('QBCore:Client:OnSharedUpdate', function(tableName, key, value)
     QBCore.Shared[tableName][key] = value
     TriggerEvent('QBCore:Client:UpdateObject')
