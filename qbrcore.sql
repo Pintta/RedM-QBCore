@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS `bans` (
   KEY `license` (`license`),
   KEY `discord` (`discord`),
   KEY `ip` (`ip`)
-) ENGINE=InnoDB AUTO_INCREMENT=1;
+);
 
 CREATE TABLE IF NOT EXISTS `bank_accounts` (
   `record_id` bigint(255) NOT NULL AUTO_INCREMENT,
@@ -44,7 +44,7 @@ CREATE TABLE IF NOT EXISTS `bank_statements` (
   KEY `buisness` (`buisness`),
   KEY `buisnessid` (`buisnessid`),
   KEY `gangid` (`gangid`)
-) ENGINE=InnoDB AUTO_INCREMENT=1;
+);
 
 CREATE TABLE IF NOT EXISTS `players` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -64,7 +64,7 @@ CREATE TABLE IF NOT EXISTS `players` (
   KEY `id` (`id`),
   KEY `last_updated` (`last_updated`),
   KEY `license` (`license`)
-) ENGINE=InnoDB AUTO_INCREMENT=1;
+);
 
 CREATE TABLE IF NOT EXISTS `playerskins` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -88,7 +88,7 @@ CREATE TABLE IF NOT EXISTS `player_outfits` (
   PRIMARY KEY (`id`),
   KEY `citizenid` (`citizenid`),
   KEY `outfitId` (`outfitId`)
-) ENGINE=InnoDB AUTO_INCREMENT=1;
+);
 
 CREATE TABLE IF NOT EXISTS `player_vehicles` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -111,7 +111,7 @@ CREATE TABLE IF NOT EXISTS `player_vehicles` (
   KEY `plate` (`plate`),
   KEY `citizenid` (`citizenid`),
   KEY `license` (`license`)
-) ENGINE=InnoDB AUTO_INCREMENT=1;
+);
 
 CREATE TABLE IF NOT EXISTS `gloveboxitems` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -119,7 +119,7 @@ CREATE TABLE IF NOT EXISTS `gloveboxitems` (
   `items` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
   PRIMARY KEY (`plate`),
   KEY `id` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1;
+);
 
 CREATE TABLE IF NOT EXISTS `stashitems` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -135,7 +135,7 @@ CREATE TABLE IF NOT EXISTS `trunkitems` (
   `items` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
   PRIMARY KEY (`plate`),
   KEY `id` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1;
+);
 
 CREATE TABLE IF NOT EXISTS `management_menu` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
@@ -155,4 +155,4 @@ CREATE TABLE IF NOT EXISTS `horses` (
   `name` varchar(50) NOT NULL,
   `components`  varchar(5000) NOT NULL DEFAULT '{}',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1;
+);
