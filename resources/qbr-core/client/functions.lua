@@ -2,8 +2,6 @@ QBCore = {}
 QBCore.PlayerData = {}
 QBCore.ServerCallbacks = {}
 
--- Shared
-
 exports('GetGangs', function()
     return QBShared.Gangs
 end)
@@ -28,8 +26,6 @@ exports('GetWeapons', function()
     return QBShared.Weapons
 end)
 
--- Player
-
 exports('GetPlayerData', function(cb)
     if cb then
         cb(QBCore.PlayerData)
@@ -52,26 +48,15 @@ exports('HasItem', function(item)
     return Citizen.Await(p)
 end)
 
--- Utility
-
 exports('Debug', function(resource, obj, depth)
     TriggerServerEvent('QBCore:DebugSomething', resource, obj, depth)
 end)
-
--- function TriggerCallback(event, ...)
--- 	local id = math.random(0, 100000)
--- 	event = ('__cb_%s'):format(event)
--- 	TriggerServerEvent(event, id, ...)
--- 	return event..id
--- end
 
 function TriggerCallback(name, cb, ...)
     QBCore.ServerCallbacks[name] = cb
     TriggerServerEvent('QBCore:Server:TriggerCallback', name, ...)
 end
 exports('TriggerCallback', TriggerCallback)
-
--- Getters
 
 exports('GetPeds', function(ignoreList)
     local pedPool = GetGamePool('CPed')
@@ -215,8 +200,6 @@ exports('AttachProp', function(ped, model, boneId, x, y, z, xR, yR, zR, Vertex)
     return prop
 end)
 
--- Vehicle
-
 exports('SpawnVehicle', function(model, cb, coords, isnetworked)
     local hash = GetHashKey(model)
     local ped = PlayerPedId()
@@ -249,10 +232,6 @@ exports("DeleteVehicle",function(vehicle)
     DeleteVehicle(vehicle)
 end)
 
-
-
--- Notification Function (can use direct export)
--- Function for Progressbar ( Missing Function export )
 exports('Progressbar', function(name, label, duration, useWhileDead, canCancel, disableControls, animation, prop, propTwo, onFinish, onCancel)
     exports['progressbar']:Progress({
         name = name:lower(),
@@ -290,32 +269,30 @@ local function LoadTexture(dict)
 end
 
 function Notify(id, text, duration, subtext, dict, icon, color)
-    local display = tostring(text) or 'Placeholder'
+    	local display = tostring(text) or 'Placeholder'
 	local subdisplay = tostring(subtext) or 'Placeholder'
 	local length = tonumber(duration) or 4000
 	local dictionary = tostring(dict) or 'generic_textures'
 	local image = tostring(icon) or 'tick'
 	local colour = tostring(color) or 'COLOR_WHITE'
-
-    local notifications = {
-        [1] = function() return exports['qbr-core']:ShowTooltip(display, length) end,
-        [2] = function() return exports['qbr-core']:DisplayRightText(display, length) end,
-        [3] = function() return exports['qbr-core']:ShowObjective(display, length) end,
-        [4] = function() return exports['qbr-core']:ShowBasicTopNotification(display, length) end,
-        [5] = function() return exports['qbr-core']:ShowSimpleCenterText(display, length) end,
-        [6] = function() return exports['qbr-core']:ShowLocationNotification(display, subdisplay, length) end,
-        [7] = function() return exports['qbr-core']:ShowTopNotification(display, subdisplay, length) end,
-        [8] = function() if not LoadTexture(dictionary) then LoadTexture('generic_textures') end
-            return exports['qbr-core']:ShowAdvancedLeftNotification(display, subdisplay, dictionary, image, length) end,
-        [9] = function() if not LoadTexture(dictionary) then LoadTexture('generic_textures') end
-            return exports['qbr-core']:ShowAdvancedRightNotification(display, dictionary, image, colour, length) end
-    }
-
-    if not notifications[id] then
-        print('Invalid Notify ID')
-        return nil
-    else
-        return notifications[id]()
-    end
+    	local notifications = {
+        	[1] = function() return exports['qbr-core']:ShowTooltip(display, length) end,
+        	[2] = function() return exports['qbr-core']:DisplayRightText(display, length) end,
+        	[3] = function() return exports['qbr-core']:ShowObjective(display, length) end,
+        	[4] = function() return exports['qbr-core']:ShowBasicTopNotification(display, length) end,
+        	[5] = function() return exports['qbr-core']:ShowSimpleCenterText(display, length) end,
+        	[6] = function() return exports['qbr-core']:ShowLocationNotification(display, subdisplay, length) end,
+        	[7] = function() return exports['qbr-core']:ShowTopNotification(display, subdisplay, length) end,
+        	[8] = function() if not LoadTexture(dictionary) then LoadTexture('generic_textures') end
+            	return exports['qbr-core']:ShowAdvancedLeftNotification(display, subdisplay, dictionary, image, length) end,
+        	[9] = function() if not LoadTexture(dictionary) then LoadTexture('generic_textures') end
+            	return exports['qbr-core']:ShowAdvancedRightNotification(display, dictionary, image, colour, length) end
+    	}
+    	if not notifications[id] then
+        	print('Invalid Notify ID')
+        	return nil
+    	else
+        	return notifications[id]()
+    	end
 end
 exports('Notify', Notify)
