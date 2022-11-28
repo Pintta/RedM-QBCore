@@ -6,7 +6,6 @@ end
 
 local function DrawText(text, position)
     if (not type(position) == "string") then position = "left" end
-
     SendNUIMessage({
         action = 'DRAW_TEXT',
         data = {
@@ -18,7 +17,6 @@ end
 
 local function ChangeText(text, position)
     if (not type(position) == "string") then position = "left" end
-
     SendNUIMessage({
         action = 'CHANGE_TEXT',
         data = {
@@ -29,7 +27,7 @@ local function ChangeText(text, position)
 end
 
 local function KeyPressed()
-    Citizen.CreateThread(function() -- Not sure if a thread is needed but why not eh?
+    Citizen.CreateThread(function()
         SendNUIMessage({
             action = 'KEY_PRESSED',
         })
