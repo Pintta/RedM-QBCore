@@ -1,3 +1,0 @@
-# mediccamp
-
-Custom Medical Camps
